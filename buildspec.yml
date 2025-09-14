@@ -1,21 +1,31 @@
 version: 0.2
 
 phases:
+  install:
+    runtime-versions:
+      java: corretto17
+      maven: 3.8
+    commands:
+      - echo Installing zip...
+      - yum install -y zip unzip
+
   pre_build:
     commands:
       - echo Nothing to do in the pre_build phase...
-            
+
   build:
     commands:
       - echo Build started on `date`
       - mvn clean package -DskipTests
-                 
+      # Rename WAR to ROOT.war for Tomcat
+      - cp target/*.war ROOT.war
+      - zip app.zip ROOT.war
+
   post_build:
     commands:
-#      - echo Build completed on `date`
-     
+      - echo Build completed on `date`
+
 artifacts:
   files:
-     - 'target/ROOT.war'
-#    - 'target/*.war'
+    - app.zip
   discard-paths: yes
