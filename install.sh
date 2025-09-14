@@ -1,3 +1,18 @@
-aws s3 cp s3://codepipeline-us-east-1-831652875528/tomcat/ROOT.war /tmp
+#!/bin/bash
+set -e
+
+echo "Deploying ROOT.war to Tomcat..."
+
+# Stop Tomcat
+sudo systemctl stop tomcat || true
+
+# Remove old deployment
+sudo rm -rf /usr/share/tomcat/webapps/ROOT*
+
+# Move new WAR
 sudo mv /tmp/ROOT.war /usr/share/tomcat/webapps/ROOT.war
-sudo service tomcat restart
+
+# Start Tomcat
+sudo systemctl start tomcat
+
+echo "Deployment completed!"
