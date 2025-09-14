@@ -1,5 +1,9 @@
 version: 0.0
 os: linux
+files:
+  - source: ROOT.war
+    destination: /tmp
+
 hooks:
   BeforeInstall:
     - location: install.sh
